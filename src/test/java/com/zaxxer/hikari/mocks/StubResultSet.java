@@ -1283,13 +1283,15 @@ public class StubResultSet implements ResultSet
     }
 
     /** {@inheritDoc} */
-    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException
+    @Override
+	public <T> T getObject(int columnIndex, Class<T> type) throws SQLException
     {
         return null;
     }
 
     /** {@inheritDoc} */
-    public <T> T getObject(String columnLabel, Class<T> type) throws SQLException
+    @Override
+	public <T> T getObject(String columnLabel, Class<T> type) throws SQLException
     {
         return null;
     }

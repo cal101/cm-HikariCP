@@ -379,13 +379,15 @@ public class StubStatement implements Statement
    }
 
    /** {@inheritDoc} */
-   public void closeOnCompletion() throws SQLException
+   @Override
+public void closeOnCompletion() throws SQLException
    {
       checkClosed();
    }
 
    /** {@inheritDoc} */
-   public boolean isCloseOnCompletion() throws SQLException
+   @Override
+public boolean isCloseOnCompletion() throws SQLException
    {
       checkClosed();
       return false;

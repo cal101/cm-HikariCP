@@ -824,7 +824,8 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
          this.poolEntry = poolEntry;
       }
 
-      public void run()
+      @Override
+	public void run()
       {
          if (softEvictConnection(poolEntry, "(connection has passed maxLifetime)", false /* not owner */)) {
             addBagItem(connectionBag.getWaitingThreadCount());
@@ -841,7 +842,8 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
          this.poolEntry = poolEntry;
       }
 
-      public void run()
+      @Override
+	public void run()
       {
          if (connectionBag.reserve(poolEntry)) {
             if (!isConnectionAlive(poolEntry.connection)) {

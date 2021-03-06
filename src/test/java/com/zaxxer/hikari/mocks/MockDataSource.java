@@ -78,7 +78,8 @@ public class MockDataSource implements DataSource
         return 0;
     }
 
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException
+    @Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException
     {
         return null;
     }

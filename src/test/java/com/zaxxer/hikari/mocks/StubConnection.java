@@ -487,29 +487,34 @@ public class StubConnection extends StubBaseConnection
    }
 
    /** {@inheritDoc} */
-   public void setSchema(String schema) throws SQLException
+   @Override
+public void setSchema(String schema) throws SQLException
    {
    }
 
    /** {@inheritDoc} */
-   public String getSchema() throws SQLException
+   @Override
+public String getSchema() throws SQLException
    {
       return null;
    }
 
    /** {@inheritDoc} */
-   public void abort(Executor executor) throws SQLException
+   @Override
+public void abort(Executor executor) throws SQLException
    {
       throw new SQLException("Intentional exception during abort");
    }
 
    /** {@inheritDoc} */
-   public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException
+   @Override
+public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException
    {
    }
 
    /** {@inheritDoc} */
-   public int getNetworkTimeout() throws SQLException
+   @Override
+public int getNetworkTimeout() throws SQLException
    {
       if (oldDriver) {
          throw new AbstractMethodError();

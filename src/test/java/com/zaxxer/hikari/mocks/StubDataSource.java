@@ -102,7 +102,8 @@ public class StubDataSource implements DataSource
    }
 
    /** {@inheritDoc} */
-   public Logger getParentLogger() throws SQLFeatureNotSupportedException
+   @Override
+public Logger getParentLogger() throws SQLFeatureNotSupportedException
    {
       return null;
    }

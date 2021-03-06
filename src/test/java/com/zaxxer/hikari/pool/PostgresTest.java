@@ -162,7 +162,8 @@ public class PostgresTest
          System.err.println("[" + getName() + "] stopRequested()");
       }
 
-      public void run() {
+      @Override
+	public void run() {
          System.err.println("[" + getName() + "] run()");
          while (!stopRequested.get()) {
             try (Connection connection = dataSource.getConnection()) {
