@@ -94,13 +94,7 @@ public class TestConnectionTimeoutRetry
          stubDataSource.setThrowException(new SQLException("Connection refused"));
 
          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-         scheduler.schedule(new Runnable() {
-            @Override
-            public void run()
-            {
-               stubDataSource.setThrowException(null);
-            }
-         }, 300, TimeUnit.MILLISECONDS);
+         scheduler.schedule(() -> stubDataSource.setThrowException(null), 300, TimeUnit.MILLISECONDS);
 
          long start = currentTime();
          try {
@@ -139,18 +133,14 @@ public class TestConnectionTimeoutRetry
          assertNotNull(connection2);
 
          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-         scheduler.schedule(new Runnable() {
-            @Override
-            public void run()
-            {
-               try {
-                  connection1.close();
-               }
-               catch (Exception e) {
-                  e.printStackTrace(System.err);
-               }
-            }
-         }, 800, MILLISECONDS);
+         scheduler.schedule(() -> {
+		   try {
+		      connection1.close();
+		   }
+		   catch (Exception e) {
+		      e.printStackTrace(System.err);
+		   }
+		}, 800, MILLISECONDS);
 
          long start = currentTime();
          try {
@@ -187,18 +177,14 @@ public class TestConnectionTimeoutRetry
          long start = currentTime();
 
          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-         scheduler.schedule(new Runnable() {
-            @Override
-            public void run()
-            {
-               try {
-                  connection1.close();
-               }
-               catch (Exception e) {
-                  e.printStackTrace(System.err);
-               }
-            }
-         }, 250, MILLISECONDS);
+         scheduler.schedule(() -> {
+		   try {
+		      connection1.close();
+		   }
+		   catch (Exception e) {
+		      e.printStackTrace(System.err);
+		   }
+		}, 250, MILLISECONDS);
 
          StubDataSource stubDataSource = ds.unwrap(StubDataSource.class);
          stubDataSource.setThrowException(new SQLException("Connection refused"));

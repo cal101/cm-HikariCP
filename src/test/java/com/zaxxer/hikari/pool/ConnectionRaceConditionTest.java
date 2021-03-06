@@ -21,7 +21,6 @@ import static com.zaxxer.hikari.pool.TestElf.setSlf4jLogLevel;
 import static org.junit.Assert.fail;
 
 import java.sql.Connection;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -62,11 +61,7 @@ public class ConnectionRaceConditionTest
       try (final HikariDataSource ds = new HikariDataSource(config)) {
          ExecutorService threadPool = Executors.newFixedThreadPool(2);
          for (int i = 0; i < ITERATIONS; i++) {
-            threadPool.submit(new Callable<Exception>() {
-               /** {@inheritDoc} */
-               @Override
-               public Exception call() throws Exception
-               {
+            threadPool.submit(() -> {
                   if (ref.get() == null) {
                      Connection c2;
                      try {
@@ -78,8 +73,7 @@ public class ConnectionRaceConditionTest
                      }
                   }
                   return null;
-               }
-            });
+               });
          }
 
          threadPool.shutdown();

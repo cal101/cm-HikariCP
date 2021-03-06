@@ -35,9 +35,6 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 /**
  *
  * @author Brett Wooldridge
@@ -117,13 +114,7 @@ public class MockDataSource implements DataSource
         when(mockConnection.prepareStatement(anyString(), any(String[].class))).thenReturn(mockPreparedStatement);
         when(mockConnection.prepareStatement(anyString(), anyInt(), anyInt())).thenReturn(mockPreparedStatement);
         when(mockConnection.prepareStatement(anyString(), anyInt(), anyInt(), anyInt())).thenReturn(mockPreparedStatement);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable
-            {
-                return null;
-            }
-        }).doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
+        doAnswer(invocation -> null).doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
 
         ResultSet mockResultSet = mock(ResultSet.class);
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);

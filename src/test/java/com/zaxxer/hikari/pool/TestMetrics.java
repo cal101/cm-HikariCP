@@ -32,8 +32,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 
 import com.codahale.metrics.Histogram;
-import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.health.HealthCheck.Result;
@@ -66,14 +64,7 @@ public class TestMetrics
       try (HikariDataSource ds = new HikariDataSource(config)) {
          ds.getConnection().close();
 
-         Timer timer = metricRegistry.getTimers(new MetricFilter() {
-            /** {@inheritDoc} */
-            @Override
-            public boolean matches(String name, Metric metric)
-            {
-               return "testMetricWait.pool.Wait".equals(MetricRegistry.name("testMetricWait", "pool", "Wait"));
-            }
-         }).values().iterator().next();
+         Timer timer = metricRegistry.getTimers((name, metric) -> "testMetricWait.pool.Wait".equals(MetricRegistry.name("testMetricWait", "pool", "Wait"))).values().iterator().next();
 
          assertEquals(1, timer.getCount());
          assertTrue(timer.getMeanRate() > 0.0);
@@ -98,14 +89,7 @@ public class TestMetrics
             UtilityElf.quietlySleep(250L);
          }
 
-         Histogram histo = metricRegistry.getHistograms(new MetricFilter() {
-            /** {@inheritDoc} */
-            @Override
-            public boolean matches(String name, Metric metric)
-            {
-               return name.equals(MetricRegistry.name("testMetricUsage", "pool", "Usage"));
-            }
-         }).values().iterator().next();
+         Histogram histo = metricRegistry.getHistograms((name, metric) -> name.equals(MetricRegistry.name("testMetricUsage", "pool", "Usage"))).values().iterator().next();
 
          assertEquals(1, histo.getCount());
          double seventyFifth = histo.getSnapshot().get75thPercentile();

@@ -32,9 +32,6 @@ import static org.mockito.Mockito.when;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.mocks.MockDataSource;
@@ -82,15 +79,12 @@ public class TestConnectionCloseBlocking {
       public Connection getConnection() throws SQLException {
          Connection mockConnection = super.getConnection();
          when(mockConnection.isValid(anyInt())).thenReturn(!shouldFail);
-         doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-               if (shouldFail) {
-                  SECONDS.sleep(2);
-               }
-               return null;
-            }
-         }).when(mockConnection).close();
+         doAnswer(invocation -> {
+		   if (shouldFail) {
+		      SECONDS.sleep(2);
+		   }
+		   return null;
+		}).when(mockConnection).close();
          return mockConnection;
       }
    }

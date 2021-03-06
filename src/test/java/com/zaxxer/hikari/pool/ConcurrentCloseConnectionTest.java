@@ -22,7 +22,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -54,15 +53,10 @@ public class ConcurrentCloseConnectionTest
 			  final PreparedStatement preparedStatement =
 				  connection.prepareStatement("");
 
-			  futures.add(executorService.submit(new Callable<Void>() {
+			  futures.add(executorService.submit(() -> {
+				  preparedStatement.close();
 
-				  @Override
-				  public Void call() throws Exception {
-					  preparedStatement.close();
-
-					  return null;
-				  }
-
+				  return null;
 			  }));
 		  }
 
