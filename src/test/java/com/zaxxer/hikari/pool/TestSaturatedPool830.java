@@ -116,8 +116,8 @@ outer:   while (true) {
                }
             });
 
-            for (int i = 0; i < failureWindow.length; i++) {
-               if (failureWindow[i]) {
+            for (boolean element : failureWindow) {
+               if (element) {
                   if (elapsedMillis(start) % (SECONDS.toMillis(1) - sleep) < sleep) {
                      LOGGER.info("Active threads {}, submissions per second {}, waiting threads {}",
                                  threadPool.getActiveCount(),
